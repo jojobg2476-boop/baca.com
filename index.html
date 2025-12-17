@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montagnes Sauvages - Rhône-Alpes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2d3436;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: 'M.P.S';
+            position: fixed;
+            font-size: 15rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.03);
+            top: 20%;
+            left: 10%;
+            z-index: 0;
+            pointer-events: none;
+            transform: rotate(-15deg);
+        }
+
+        body::after {
+            content: 'M.P.S';
+            position: fixed;
+            font-size: 12rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.03);
+            bottom: 15%;
+            right: 10%;
+            z-index: 0;
+            pointer-events: none;
+            transform: rotate(15deg);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .mps-watermark {
+            position: fixed;
+            font-size: 10rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.02);
+            z-index: 0;
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .mps-1 { top: 40%; left: 50%; transform: rotate(-25deg); }
+        .mps-2 { top: 60%; left: 20%; transform: rotate(20deg); animation-delay: 5s; }
+        .mps-3 { top: 30%; right: 15%; transform: rotate(-10deg); animation-delay: 10s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-25deg); }
+            50% { transform: translateY(-30px) rotate(-20deg); }
+        }
+
+        header {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 25%, #43a047 50%, #66bb6a 75%, #81c784 100%);
+            background-size: 200% 200%;
+            animation: headerGradient 8s ease infinite;
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        @keyframes headerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.8rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: fadeInDown 1s ease;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease;
+        }
+
+        .creators {
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
+            opacity: 0.9;
+            font-weight: 600;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(165,214,167,0.3));
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            display: inline-block;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        nav {
+            background: linear-gradient(90deg, #1b5e20, #2e7d32, #43a047, #2e7d32, #1b5e20);
+            background-size: 200% 100%;
+            animation: navSlide 5s ease infinite;
+            padding: 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        @keyframes navSlide {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(27, 94, 32, 0.7), rgba(67, 160, 71, 0.7)),
+                        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=600&fit=crop') center/cover;
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            margin: 3rem 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: fadeIn 1.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        }
+
+        .section {
+            margin-bottom: 5rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            position: relative;
+        }
+
+        .section::before {
+            content: 'M.P.S';
+            position: absolute;
+            font-size: 8rem;
+            font-weight: bold;
+            color: rgba(27, 94, 32, 0.02);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-5deg);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .section h2 {
+            background: linear-gradient(135deg, #1b5e20, #43a047, #66bb6a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 4px solid #43a047;
+            padding-bottom: 0.8rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mountains-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mountain-card {
+            background: linear-gradient(135deg, #ffffff, #f1f8f4);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            border: 3px solid #e8f5e9;
+        }
+
+        .mountain-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(27, 94, 32, 0.3);
+            border-color: #43a047;
+        }
+
+        .mountain-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mountain-image:hover {
+            transform: scale(1.05);
+        }
+
+        .mountain-image::after {
+            content: '🖱️ Cliquez !';
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mountain-image:hover::after {
+            opacity: 1;
+        }
+
+        .mountain-content {
+            padding: 2rem;
+            background: linear-gradient(to bottom, white, #f1f8f4);
+        }
+
+        .mountain-content h3 {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.6rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .altitude {
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .altitude::before {
+            content: '🏔️';
+            font-size: 1.5rem;
+        }
+
+        .description {
+            color: #555;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+
+        .feature-tag {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .feature-tag:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #66bb6a, #81c784);
+        }
+
+        .inoxtag-special {
+            background: linear-gradient(135deg, #ff6b35, #f7931e, #ffd93d);
+            animation: inoGlow 2s ease infinite;
+        }
+
+        @keyframes inoGlow {
+            0%, 100% { box-shadow: 0 2px 5px rgba(255, 107, 53, 0.3); }
+            50% { box-shadow: 0 2px 15px rgba(255, 107, 53, 0.8); }
+        }
+
+        .everest-special {
+            background: linear-gradient(135deg, #1e88e5, #42a5f5, #64b5f6);
+            animation: everestGlow 2s ease infinite;
+        }
+
+        @keyframes everestGlow {
+            0%, 100% { box-shadow: 0 2px 5px rgba(30, 136, 229, 0.3); }
+            50% { box-shadow: 0 2px 15px rgba(30, 136, 229, 0.8); }
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32, #43a047, #2e7d32, #1b5e20);
+            background-size: 200% 200%;
+            animation: footerGradient 10s ease infinite;
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 5rem;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes footerGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        footer p {
+            font-size: 1.1rem;
+        }
+
+        .footer-signature {
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(165,214,167,0.15));
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+            display: inline-block;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7);
+            border-left: 6px solid #2e7d32;
+            padding: 2rem;
+            margin: 3rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-box h3 {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .info-box ul {
+            color: #2d3436;
+        }
+
+        .info-box ul li {
+            margin-bottom: 0.8rem;
+            padding-left: 1rem;
+        }
+
+        .inoxtag-message {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2, #ffcc80);
+            border-left: 6px solid #ff6b35;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border-radius: 8px;
+            font-style: italic;
+            color: #d84315;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .mountains-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="mps-watermark mps-1">M.P.S</div>
+    <div class="mps-watermark mps-2">M.P.S</div>
+    <div class="mps-watermark mps-3">M.P.S</div>
+
+    <header>
+        <h1>🏔️ Montagnes Sauvages</h1>
+        <p>Découvrez les sommets majestueux des Rhône-Alpes</p>
+        <div class="creators">✨ Créé par Jojo, Aelys & Lio ✨</div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#massifs">🗻 Massifs</a></li>
+            <li><a href="#sommets">⛰️ Sommets</a></li>
+            <li><a href="#randonnees">🥾 Randonnées</a></li>
+            <li><a href="#conseils">💡 Conseils</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <h2>L'Aventure Commence Ici</h2>
+        <p>Explorez les plus beaux sommets des Alpes françaises</p>
+    </div>
+
+    <div class="container">
+        <section id="massifs" class="section">
+            <h2>Les Grands Massifs</h2>
+            <div class="mountains-grid">
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Mont Blanc</h3>
+                        <div class="altitude">4 808 m</div>
+                        <p class="description">🌟 Le titan des Alpes ! Colosse glaciaire emblématique, ce géant de roche et de glace règne en maître absolu sur l'Europe occidentale. Ses parois vertigineuses défient les alpinistes les plus aguerris, tandis que ses glaciers millénaires racontent l'histoire de notre planète. Un temple naturel où se mêlent danger extrême et beauté absolue.</p>
+                        <div class="inoxtag-message">
+                            🔥 Inoxtag a conquis ce mastodonte en 2024, prouvant qu'avec détermination et courage, RIEN n'est impossible ! Une ascension légendaire qui a inspiré toute une génération !
+                        </div>
+                        <div class="features">
+                            <span class="feature-tag">❄️ Glacier</span>
+                            <span class="feature-tag">⛰️ Haute montagne</span>
+                            <span class="feature-tag">🧗 Alpinisme</span>
+                            <span class="feature-tag inoxtag-special">⭐ Inoxtag</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('http://pf.gy/388451', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Mont Everest</h3>
+                        <div class="altitude">8 849 m - LA PLUS GRANDE !</div>
+                        <p class="description">👑 LE TOIT DU MONDE ! La montagne ultime, le Graal de tous les alpinistes ! Situé dans l'Himalaya entre le Népal et le Tibet, ce monstre de glace et de roche représente le défi suprême de l'humanité. À cette altitude, l'oxygène se raréfie, le corps souffre, mais l'esprit s'élève ! Chaque pas est une victoire contre les éléments déchaînés.</p>
+                        <div class="inoxtag-message">
+                            🚀 Le prochain défi d'Inoxtag ? L'Everest est dans sa ligne de mire ! Le créateur français pourrait bien devenir une légende en conquérant le sommet des sommets ! STAY TUNED ! 🔥
+                        </div>
+                        <div class="features">
+                            <span class="feature-tag">🌏 Himalaya</span>
+                            <span class="feature-tag">❄️ Extrême</span>
+                            <span class="feature-tag">💀 Zone de mort</span>
+                            <span class="feature-tag everest-special">👑 Toit du monde</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Massif des Écrins</h3>
+                        <div class="altitude">4 102 m (Barre des Écrins)</div>
+                        <p class="description">💎 Le joyau sauvage des Alpes du Sud ! Ce parc national préservé est un véritable paradis terrestre où la nature règne sans partage. Glaciers étincelants, lacs d'altitude aux eaux turquoise cristallines, pics acérés déchirant les nuages... Un sanctuaire alpin où bouquetins et chamois vivent en totale liberté !</p>
+                        <div class="features">
+                            <span class="feature-tag">🌲 Parc national</span>
+                            <span class="feature-tag">🦌 Faune sauvage</span>
+                            <span class="feature-tag">🥾 Randonnée</span>
+                            <span class="feature-tag">💎 Préservé</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Vanoise</h3>
+                        <div class="altitude">3 855 m (Grande Casse)</div>
+                        <p class="description">🏞️ Le premier-né des parcs français ! Créé en 1963, ce sanctuaire alpin abrite la plus grande concentration de bouquetins d'Europe. Ses sommets majestueux, ses vallées verdoyantes et ses alpages fleuris forment un écosystème unique où la nature reprend ses droits. Un spectacle grandiose à chaque saison !</p>
+                        <div class="features">
+                            <span class="feature-tag">🏞️ Parc national</span>
+                            <span class="feature-tag">🐐 Bouquetins</span>
+                            <span class="feature-tag">🌼 Alpage</span>
+                            <span class="feature-tag">🎖️ Historique</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="sommets" class="section">
+            <h2>Sommets Emblématiques</h2>
+            <div class="mountains-grid">
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/IwAZ6dvvvaTtdI8SD5/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Aiguille du Midi</h3>
+                        <div class="altitude">3 842 m</div>
+                        <p class="description">🚡 L'expérience ultime à 3842m ! Grimpez dans les nuages via le téléphérique le plus vertigineux d'Europe. Au sommet : un panorama à couper le souffle sur le massif du Mont Blanc, la Vallée Blanche et les Alpes à 360°. Sensations extrêmes garanties avec la passerelle de verre suspendue dans le vide !</p>
+                        <div class="features">
+                            <span class="feature-tag">🚡 Téléphérique</span>
+                            <span class="feature-tag">📸 Panorama</span>
+                            <span class="feature-tag">✅ Accessible</span>
+                            <span class="feature-tag">😱 Vertige</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Le Grand Veymont</h3>
+                        <div class="altitude">2 341 m</div>
+                        <p class="description">⚪ Le roi du Vercors ! Point culminant de ce massif calcaire mythique, ce sommet domine un océan de falaises blanches spectaculaires. Depuis son sommet, embrassez du regard la chaîne alpine dans toute sa splendeur. Un belvédère naturel époustouflant sculpté par des millions d'années d'érosion !</p>
+                        <div class="features">
+                            <span class="feature-tag">🏔️ Vercors</span>
+                            <span class="feature-tag">⚪ Calcaire</span>
+                            <span class="feature-tag">🥾 Randonnée</span>
+                            <span class="feature-tag">🦅 Aigles</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/xUA7aM09ByyR1w5YWc/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Dent de Crolles</h3>
+                        <div class="altitude">2 062 m</div>
+                        <p class="description">🕳️ La montagne aux mille secrets souterrains ! Cette icône de Chartreuse cache sous ses pieds l'un des plus grands réseaux de grottes d'Europe - plus de 60km de galeries ! En surface, un sommet magnifique. En profondeur, un monde mystérieux et fascinant qui attire spéléologues du monde entier !</p>
+                        <div class="features">
+                            <span class="feature-tag">🗻 Chartreuse</span>
+                            <span class="feature-tag">🕳️ Spéléologie</span>
+                            <span class="feature-tag">🥾 Randonnée</span>
+                            <span class="feature-tag">🔦 Grottes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Mont Aiguille</h3>
+                        <div class="altitude">2 086 m</div>
+                        <p class="description">🏰 La forteresse imprenable du Vercors ! Avec ses parois verticales de 300m, ce château de pierre défie la gravité. Première ascension alpine documentée en 1492 sur ordre du roi Charles VIII. Une prouesse historique qui a marqué le début de l'alpinisme moderne ! Aujourd'hui encore, grimper cette tour naturelle reste un exploit.</p>
+                        <div class="features">
+                            <span class="feature-tag">📜 Historique</span>
+                            <span class="feature-tag">🧗 Escalade</span>
+                            <span class="feature-tag">⭐ Unique</span>
+                            <span class="feature-tag">🏰 Forteresse</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Pic de Bure</h3>
+                        <div class="altitude">2 709 m</div>
+                        <p class="description">🔭 L'observatoire des étoiles ! Au sommet de ce pic du Dévoluy trône l'un des plus importants observatoires astronomiques d'Europe. De jour, panorama exceptionnel à 360° sur les Alpes du Sud. De nuit, les télescopes scrutent l'univers infini. Science et nature en parfaite harmonie !</p>
+                        <div class="features">
+                            <span class="feature-tag">🔭 Observatoire</span>
+                            <span class="feature-tag">🏔️ Dévoluy</span>
+                            <span class="feature-tag">⭐ Astronomie</span>
+                            <span class="feature-tag">🌌 Science</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/26BRuo6sLetdllPAQ/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Pointe Percée</h3>
+                        <div class="altitude">2 752 m</div>
+                        <p class="description">⛰️ La reine des Aravis ! Reconnaissable entre toutes avec sa cime effilée comme une lance pointée vers le ciel. Depuis son sommet technique, découvrez le lac d'Annecy scintillant en contrebas et un panorama grandiose sur le massif du Mont Blanc. Ascension exigeante réservée aux alpinistes confirmés !</p>
+                        <div class="features">
+                            <span class="feature-tag">⛰️ Aravis</span>
+                            <span class="feature-tag">🧗 Technique</span>
+                            <span class="feature-tag">📸 Panorama</span>
+                            <span class="feature-tag">👑 Reine</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="info-box">
+            <h3>🌲 Nature Sauvage et Préservée</h3>
+            <p>Les montagnes des Rhône-Alpes abritent une <span class="highlight">biodiversité exceptionnelle</span> : bouquetins majestueux, chamois agiles, marmottes espiègles, aigles royaux planant dans les cieux, et une flore alpine unique aux couleurs éclatantes. Les parcs nationaux et régionaux protègent ces <span class="highlight">écosystèmes fragiles</span> pour les générations futures, offrant aux visiteurs une expérience authentique au cœur d'une nature préservée.</p>
+            <div class="inoxtag-message" style="margin-top: 1.5rem;">
+                💪 Suivez l'exemple d'Inoxtag : respectez la montagne, dépassez vos limites et inspirez les autres à réaliser leurs rêves !
+            </div>
+        </div>
+
+        <section id="randonnees" class="section">
+            <h2>Randonnées Incontournables</h2>
+            <div class="mountains-grid">
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/3oEdva9BUHPIs2SkGk/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Tour du Mont Blanc</h3>
+                        <div class="altitude">170 km - 10 jours</div>
+                        <p class="description">🎒 Le trek mythique qui traverse trois pays (France, Italie, Suisse) autour du massif du Mont Blanc. Une aventure inoubliable à travers des paysages alpins variés : glaciers, alpages fleuris, cols d'altitude et refuges traditionnels. L'expérience de randonnée ultime en Europe !</p>
+                        <div class="features">
+                            <span class="feature-tag">🎒 Itinérance</span>
+                            <span class="feature-tag">🌍 International</span>
+                            <span class="feature-tag">💪 Difficile</span>
+                            <span class="feature-tag">🏕️ Refuges</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/26tn33aiTi1jkl6H6/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>GR5 - Traversée des Alpes</h3>
+                        <div class="altitude">600 km</div>
+                        <p class="description">🗺️ De Genève à Nice, la grande traversée des Alpes franchit tous les massifs emblématiques. Un voyage épique à travers la diversité alpine : Vanoise, Écrins, Queyras, Mercantour. Pour randonneurs passionnés en quête d'aventure totale et de déconnexion absolue !</p>
+                        <div class="features">
+                            <span class="feature-tag">🗺️ Longue distance</span>
+                            <span class="feature-tag">🌄 Varié</span>
+                            <span class="feature-tag">⛺ Aventure</span>
+                            <span class="feature-tag">🏔️ Épique</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mountain-card">
+                    <div class="mountain-image" onclick="window.open('https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif', '_blank')" style="background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop');"></div>
+                    <div class="mountain-content">
+                        <h3>Lac Blanc</h3>
+                        <div class="altitude">7 km - 4h</div>
+                        <p class="description">💧 Vue imprenable sur le massif du Mont Blanc depuis ce lac d'altitude emblématique à 2352m. Randonnée accessible depuis Chamonix offrant un panorama spectaculaire sur les sommets enneigés se reflétant dans les eaux cristallines. Magic garantie au lever et coucher du soleil !</p>
+                        <div class="features">
+                            <span class="feature-tag">☀️ Journée</span>
+                            <span class="feature-tag">👨‍👩‍👧 Famille</span>
+                            <span class="feature-tag">💧 Lac</span>
+                            <span class="feature-tag">📸 Photos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="conseils" class="section">
+            <h2>Conseils Pratiques</h2>
+            <div class="info-box">
+                <h3>⚠️ Sécurité en Montagne</h3>
+                <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+                    <li>☁️ <strong>Consultez la météo</strong> avant chaque sortie et adaptez votre itinéraire</li>
+                    <li>⏰ <strong>Partez tôt</strong> le matin pour éviter les orages d'après-midi</li>
+                    <li>👟 <strong>Équipez-vous</strong> de bonnes chaussures de randonnée montantes</li>
+                    <li>🎒 <strong>Emportez</strong> eau en quantité suffisante, nourriture énergétique et vêtements chauds</li>
+                    <li>📱 <strong>Prévenez</strong> vos proches de votre itinéraire et heure de retour</li>
+                    <li>🌿 <strong>Respectez</strong> la faune, la flore et ne laissez aucune trace</li>
+                    <li>💪 <strong>Évaluez</strong> objectivement vos capacités physiques avant de partir</li>
+                    <li>🗺️ <strong>Munissez-vous</strong> d'une carte et d'une boussole (ou GPS)</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p style="font-size: 1.2rem; margin-bottom: 1rem;">🏔️ Montagnes Sauvages Rhône-Alpes | Découvrez la beauté des Alpes 🏔️</p>
+        <p style="font-size: 1rem; margin-bottom: 1.5rem;">🥾 Randonnez responsable, préservez la montagne 🌲</p>
+        
+        <div class="footer-signature">
+            <p style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem; color: #ffeb3b; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">⚡ FUCK ANJALI ET ELIOTT ⚡</p>
+            <p style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem;">✨ Signé : Le Groupe des Bacas ✨</p>
+        </div>
+        
+        <p style="margin-top: 2rem; font-size: 0.95rem; opacity: 0.9;">&copy; 2024 - Tous droits réservés</p>
+    </footer>
+</body>
+</html> 
