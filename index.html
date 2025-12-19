@@ -3,8 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Montagnes Sauvages - Rhône-Alpes</title>
+    <title>Montagnes Pyrénées Sauvages</title>
     <style>
+        :root {
+            --bg-gradient-1: #ffffff;
+            --bg-gradient-2: #e8f5e9;
+            --bg-gradient-3: #c8e6c9;
+            --bg-gradient-4: #a5d6a7;
+            --bg-gradient-5: #81c784;
+            --bg-gradient-6: #66bb6a;
+            --bg-gradient-7: #4caf50;
+            --bg-gradient-8: #43a047;
+            --text-color: #2d3436;
+            --card-bg: #ffffff;
+            --section-bg: #ffffff;
+            --nav-text: #1b5e20;
+        }
+
+        body.dark-mode {
+            --bg-gradient-1: #0d1b0d;
+            --bg-gradient-2: #1a2e1a;
+            --bg-gradient-3: #264026;
+            --bg-gradient-4: #335333;
+            --bg-gradient-5: #406640;
+            --bg-gradient-6: #4d794d;
+            --bg-gradient-7: #5a8c5a;
+            --bg-gradient-8: #679f67;
+            --text-color: #e8f5e9;
+            --card-bg: #1a2e1a;
+            --section-bg: #0d1b0d;
+            --nav-text: #a5d6a7;
+        }
+
+        /* Snowflakes */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 9999;
+            color: white;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Mode Switch */
+        .mode-switch {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #66bb6a, #81c784);
+            padding: 1rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-switch:hover {
+            transform: scale(1.1);
+        }
+
+        .mode-switch span {
+            font-size: 2rem;
+        }
+
+        /* Music Panel */
+        .music-panel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #ffffff, #e8f5e9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            width: 300px;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .music-panel {
+            background: linear-gradient(135deg, #1a2e1a, #264026);
+            color: #e8f5e9;
+        }
+
+        .music-panel.minimized {
+            width: 60px;
+            height: 60px;
+            padding: 0;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .music-panel.minimized .panel-content {
+            display: none;
+        }
+
+        .panel-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .panel-toggle:hover {
+            transform: rotate(90deg);
+        }
+
+        .music-panel.minimized .panel-toggle {
+            position: static;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            font-size: 2rem;
+        }
+
+        .panel-content h3 {
+            color: #2e7d32;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        body.dark-mode .panel-content h3 {
+            color: #a5d6a7;
+        }
+
+        .music-select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #66bb6a;
+            border-radius: 8px;
+            background: white;
+            color: #2d3436;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .music-select {
+            background: #0d1b0d;
+            color: #e8f5e9;
+            border-color: #4d794d;
+        }
+
+        .music-select:hover {
+            border-color: #43a047;
+            transform: scale(1.02);
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .music-btn {
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .music-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(67, 160, 71, 0.3);
+        }
+
+        .volume-control {
+            margin-top: 1rem;
+        }
+
+        .volume-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #c8e6c9;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        body.dark-mode .volume-slider {
+            background: #264026;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            cursor: pointer;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #43a047, #66bb6a);
+            cursor: pointer;
+            border: none;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -14,38 +237,43 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #2d3436;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--bg-gradient-1) 0%, var(--bg-gradient-2) 15%, var(--bg-gradient-3) 30%, var(--bg-gradient-4) 45%, var(--bg-gradient-5) 60%, var(--bg-gradient-6) 75%, var(--bg-gradient-7) 90%, var(--bg-gradient-8) 100%);
             background-size: 400% 400%;
             animation: gradientShift 15s ease infinite;
             position: relative;
             overflow-x: hidden;
+            transition: all 0.5s ease;
         }
 
         body::before {
             content: 'M.P.S';
             position: fixed;
-            font-size: 15rem;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.03);
-            top: 20%;
-            left: 10%;
+            font-size: 25rem;
+            font-weight: 900;
+            color: rgba(46, 125, 50, 0.35);
+            top: 10%;
+            left: 3%;
             z-index: 0;
             pointer-events: none;
             transform: rotate(-15deg);
+            text-shadow: 3px 3px 8px rgba(255, 255, 255, 0.5);
+            letter-spacing: 1rem;
         }
 
         body::after {
             content: 'M.P.S';
             position: fixed;
-            font-size: 12rem;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.03);
-            bottom: 15%;
-            right: 10%;
+            font-size: 22rem;
+            font-weight: 900;
+            color: rgba(27, 94, 32, 0.35);
+            bottom: 5%;
+            right: 3%;
             z-index: 0;
             pointer-events: none;
             transform: rotate(15deg);
+            text-shadow: 3px 3px 8px rgba(255, 255, 255, 0.5);
+            letter-spacing: 1rem;
         }
 
         @keyframes gradientShift {
@@ -56,17 +284,19 @@
 
         .mps-watermark {
             position: fixed;
-            font-size: 10rem;
-            font-weight: bold;
-            color: rgba(255, 255, 255, 0.02);
+            font-size: 18rem;
+            font-weight: 900;
+            color: rgba(27, 94, 32, 0.4);
             z-index: 0;
             pointer-events: none;
             animation: float 20s ease-in-out infinite;
+            text-shadow: 3px 3px 6px rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.8rem;
         }
 
-        .mps-1 { top: 40%; left: 50%; transform: rotate(-25deg); }
-        .mps-2 { top: 60%; left: 20%; transform: rotate(20deg); animation-delay: 5s; }
-        .mps-3 { top: 30%; right: 15%; transform: rotate(-10deg); animation-delay: 10s; }
+        .mps-1 { top: 30%; left: 40%; transform: rotate(-25deg); }
+        .mps-2 { top: 50%; left: 10%; transform: rotate(20deg); animation-delay: 5s; }
+        .mps-3 { top: 20%; right: 8%; transform: rotate(-10deg); animation-delay: 10s; }
 
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(-25deg); }
@@ -74,7 +304,7 @@
         }
 
         header {
-            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 25%, #43a047 50%, #66bb6a 75%, #81c784 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 10%, #c8e6c9 20%, #a5d6a7 30%, #81c784 40%, #66bb6a 50%, #4caf50 60%, #43a047 70%, #388e3c 80%, #2e7d32 90%, #1b5e20 100%);
             background-size: 200% 200%;
             animation: headerGradient 8s ease infinite;
             color: white;
@@ -139,9 +369,9 @@
         }
 
         nav {
-            background: linear-gradient(90deg, #1b5e20, #2e7d32, #43a047, #2e7d32, #1b5e20);
-            background-size: 200% 100%;
-            animation: navSlide 5s ease infinite;
+            background: linear-gradient(90deg, #ffffff, #e8f5e9, #c8e6c9, #a5d6a7, #81c784, #66bb6a, #4caf50, #43a047, #388e3c, #2e7d32, #1b5e20, #2e7d32, #388e3c, #43a047, #4caf50, #66bb6a, #81c784, #a5d6a7, #c8e6c9, #e8f5e9, #ffffff);
+            background-size: 400% 100%;
+            animation: navSlide 8s ease infinite;
             padding: 1.2rem;
             position: sticky;
             top: 0;
@@ -164,18 +394,25 @@
         }
 
         nav a {
-            color: white;
+            color: var(--nav-text);
             text-decoration: none;
             font-weight: 600;
             font-size: 1.1rem;
             transition: all 0.3s;
             padding: 0.5rem 1rem;
             border-radius: 5px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        }
+
+        body.dark-mode nav a {
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         nav a:hover {
-            background: rgba(255,255,255,0.2);
+            background: linear-gradient(135deg, #66bb6a, #81c784);
+            color: white;
             transform: translateY(-2px);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
         }
 
         .container {
@@ -216,24 +453,29 @@
 
         .section {
             margin-bottom: 5rem;
-            background: rgba(255, 255, 255, 0.9);
+            background: linear-gradient(135deg, var(--section-bg) 0%, var(--bg-gradient-2) 50%, var(--bg-gradient-3) 100%);
             padding: 3rem;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             position: relative;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #66bb6a, #81c784, #a5d6a7) 1;
+            transition: all 0.5s ease;
         }
 
         .section::before {
             content: 'M.P.S';
             position: absolute;
-            font-size: 8rem;
-            font-weight: bold;
-            color: rgba(27, 94, 32, 0.02);
+            font-size: 16rem;
+            font-weight: 900;
+            color: rgba(46, 125, 50, 0.15);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-5deg);
             z-index: 0;
             pointer-events: none;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
+            letter-spacing: 1rem;
         }
 
         .section h2 {
@@ -260,18 +502,19 @@
         }
 
         .mountain-card {
-            background: linear-gradient(135deg, #ffffff, #f1f8f4);
+            background: linear-gradient(135deg, var(--card-bg) 0%, var(--bg-gradient-2) 30%, var(--bg-gradient-3) 60%, var(--bg-gradient-4) 100%);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 20px rgba(27, 94, 32, 0.2);
             transition: all 0.4s ease;
-            border: 3px solid #e8f5e9;
+            border: 3px solid transparent;
+            background-clip: padding-box;
         }
 
         .mountain-card:hover {
             transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(27, 94, 32, 0.3);
-            border-color: #43a047;
+            box-shadow: 0 15px 35px rgba(27, 94, 32, 0.4);
+            border: 3px solid #66bb6a;
         }
 
         .mountain-image {
@@ -385,7 +628,7 @@
         }
 
         footer {
-            background: linear-gradient(135deg, #1b5e20, #2e7d32, #43a047, #2e7d32, #1b5e20);
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 10%, #c8e6c9 20%, #a5d6a7 30%, #81c784 40%, #66bb6a 50%, #4caf50 60%, #43a047 70%, #388e3c 80%, #2e7d32 90%, #1b5e20 100%);
             background-size: 200% 200%;
             animation: footerGradient 10s ease infinite;
             color: white;
@@ -417,12 +660,12 @@
         }
 
         .info-box {
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9, #a5d6a7);
-            border-left: 6px solid #2e7d32;
+            background: linear-gradient(135deg, #ffffff 0%, #e8f5e9 25%, #c8e6c9 50%, #a5d6a7 75%, #81c784 100%);
+            border-left: 8px solid #2e7d32;
             padding: 2rem;
             margin: 3rem 0;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(27, 94, 32, 0.2);
         }
 
         .info-box h3 {
@@ -488,7 +731,7 @@
     <div class="mps-watermark mps-3">M.P.S</div>
 
     <header>
-        <h1>🏔️ Montagnes Sauvages</h1>
+        <h1>🏔️ Montagnes Pyrénées Sauvages</h1>
         <p>Découvrez les sommets majestueux des Rhône-Alpes</p>
         <div class="creators">✨ Créé par Jojo, Aelys & Lio ✨</div>
     </header>
@@ -739,19 +982,19 @@
                 <ul style="margin-left: 1.5rem; margin-top: 1rem;">
                     <li>☁️ <strong>Consultez la météo</strong> avant chaque sortie et adaptez votre itinéraire</li>
                     <li>⏰ <strong>Partez tôt</strong> le matin pour éviter les orages d'après-midi</li>
-                    <li>👟 <strong>Équipez-vous</strong> Tout d'abord m'uniser de capot au cas ou</li>
-                    <li>🎒 <strong>Emportez</strong> BLC ( capots au cas ou ) </li>
-                    <li>📱 <strong>Prévenez</strong> Jouir très fort </li>
-                    <li>🌿 <strong>Respectez</strong> BLC le respect</li>
-                    <li>💪 <strong>Évaluez</strong> Regarder le physique ( que le physique ) </li>
-                    <li>🗺️ <strong>Munissez-vous</strong> DE CAPOTS </li>
+                    <li>👟 <strong>Équipez-vous</strong> de bonnes chaussures de randonnée montantes</li>
+                    <li>🎒 <strong>Emportez</strong> eau en quantité suffisante, nourriture énergétique et vêtements chauds</li>
+                    <li>📱 <strong>Prévenez</strong> vos proches de votre itinéraire et heure de retour</li>
+                    <li>🌿 <strong>Respectez</strong> la faune, la flore et ne laissez aucune trace</li>
+                    <li>💪 <strong>Évaluez</strong> objectivement vos capacités physiques avant de partir</li>
+                    <li>🗺️ <strong>Munissez-vous</strong> d'une carte et d'une boussole (ou GPS)</li>
                 </ul>
             </div>
         </section>
     </div>
 
     <footer>
-        <p style="font-size: 1.2rem; margin-bottom: 1rem;">🏔️ Montagnes Sauvages Rhône-Alpes | Découvrez la beauté des Alpes 🏔️</p>
+        <p style="font-size: 1.2rem; margin-bottom: 1rem;">🏔️ Montagnes Pyrénées Sauvages | Découvrez la beauté des Alpes 🏔️</p>
         <p style="font-size: 1rem; margin-bottom: 1.5rem;">🥾 Randonnez responsable, préservez la montagne 🌲</p>
         
         <div class="footer-signature">
@@ -759,7 +1002,7 @@
             <p style="font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem;">✨ Signé : Le Groupe des Bacas ✨</p>
         </div>
         
-        <p style="margin-top: 2rem; font-size: 0.95rem; opacity: 0.9;">&copy; 2025 - Tous droits réservés</p>
+        <p style="margin-top: 2rem; font-size: 0.95rem; opacity: 0.9;">&copy; 2024 - Tous droits réservés</p>
     </footer>
 </body>
-</html> 
+</html>
