@@ -18,6 +18,9 @@
             --card-bg: #ffffff;
             --section-bg: #ffffff;
             --nav-text: #1b5e20;
+            --main-color: #43a047;
+            --main-color-light: #66bb6a;
+            --main-color-dark: #2e7d32;
         }
 
         body.dark-mode {
@@ -74,82 +77,185 @@
             font-size: 2rem;
         }
 
-        /* Music Panel */
-        .music-panel {
+        /* Menu Toggle */
+        .menu-toggle {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
-            z-index: 1000;
-            background: linear-gradient(135deg, #ffffff, #e8f5e9);
-            padding: 1.5rem;
+            z-index: 10001;
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-light));
+            width: 65px;
+            height: 65px;
             border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
             box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            width: 300px;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        body.dark-mode .music-panel {
+        .menu-toggle:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 30px rgba(67, 160, 71, 0.4);
+        }
+
+        .menu-toggle.active {
+            transform: rotate(90deg);
+            background: linear-gradient(135deg, #e91e63, #ff6b35);
+        }
+
+        .menu-bar {
+            width: 35px;
+            height: 5px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .menu-toggle.active .menu-bar:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+            width: 40px;
+        }
+
+        .menu-toggle.active .menu-bar:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .menu-toggle.active .menu-bar:nth-child(3) {
+            transform: rotate(-45deg) translate(10px, -10px);
+            width: 40px;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            position: fixed;
+            top: 95px;
+            right: 20px;
+            z-index: 10000;
+            background: linear-gradient(135deg, #ffffff, #e8f5e9);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            width: 370px;
+            border: 3px solid var(--main-color);
+        }
+
+        body.dark-mode .dropdown-menu {
             background: linear-gradient(135deg, #1a2e1a, #264026);
-            color: #e8f5e9;
+            border-color: var(--main-color-light);
         }
 
-        .music-panel.minimized {
-            width: 60px;
-            height: 60px;
-            padding: 0;
-            border-radius: 50%;
+        .dropdown-menu.active {
+            max-height: 650px;
+            opacity: 1;
+        }
+
+        .menu-category {
+            border-bottom: 2px solid rgba(67, 160, 71, 0.2);
+        }
+
+        .menu-category:last-child {
+            border-bottom: none;
+        }
+
+        .category-header {
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-light));
+            color: white;
+            padding: 1.2rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            position: relative;
             overflow: hidden;
         }
 
-        .music-panel.minimized .panel-content {
-            display: none;
+        .category-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
 
-        .panel-toggle {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: linear-gradient(135deg, #43a047, #66bb6a);
+        .category-header:hover::before {
+            left: 100%;
+        }
+
+        .category-header:hover {
+            background: linear-gradient(135deg, var(--main-color-dark), var(--main-color));
+            transform: translateX(5px);
+        }
+
+        .category-header.active .category-icon {
+            transform: rotate(180deg);
+        }
+
+        .category-icon {
+            transition: transform 0.3s;
+        }
+
+        .category-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        body.dark-mode .category-content {
+            background: rgba(26, 46, 26, 0.5);
+        }
+
+        .category-content.active {
+            max-height: 500px;
+            padding: 1.5rem;
+        }
+
+        /* Music Panel */
+        .music-controls {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .music-btn {
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-light));
             color: white;
             border: none;
-            padding: 0.5rem;
-            border-radius: 50%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 1.2rem;
-            width: 35px;
-            height: 35px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
             transition: all 0.3s;
         }
 
-        .panel-toggle:hover {
-            transform: rotate(90deg);
+        .music-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(67, 160, 71, 0.3);
+            background: linear-gradient(135deg, var(--main-color-light), var(--main-color-dark));
         }
 
-        .music-panel.minimized .panel-toggle {
-            position: static;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            font-size: 2rem;
-        }
-
-        .panel-content h3 {
-            color: #2e7d32;
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-
-        body.dark-mode .panel-content h3 {
-            color: #a5d6a7;
-        }
-
+        /* Settings Panel */
         .music-select {
             width: 100%;
             padding: 0.8rem;
-            border: 2px solid #66bb6a;
+            border: 2px solid var(--main-color-light);
             border-radius: 8px;
             background: white;
             color: #2d3436;
@@ -166,32 +272,8 @@
         }
 
         .music-select:hover {
-            border-color: #43a047;
+            border-color: var(--main-color);
             transform: scale(1.02);
-        }
-
-        .music-controls {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-top: 1rem;
-        }
-
-        .music-btn {
-            background: linear-gradient(135deg, #43a047, #66bb6a);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .music-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(67, 160, 71, 0.3);
         }
 
         .volume-control {
@@ -216,7 +298,7 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #43a047, #66bb6a);
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-light));
             cursor: pointer;
         }
 
@@ -224,9 +306,235 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #43a047, #66bb6a);
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-light));
             cursor: pointer;
             border: none;
+        }
+
+        .setting-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .setting-item label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2e7d32;
+        }
+
+        body.dark-mode .setting-item label {
+            color: #a5d6a7;
+        }
+
+        .setting-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #c8e6c9;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        body.dark-mode .setting-slider {
+            background: #264026;
+        }
+
+        .setting-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-light));
+            cursor: pointer;
+        }
+
+        .setting-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--main-color), var(--main-color-light));
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 0.5rem;
+        }
+
+        .setting-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(67, 160, 71, 0.3);
+            background: linear-gradient(135deg, var(--main-color-light), var(--main-color-dark));
+        }
+
+        .color-picker {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #66bb6a;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Stats Panel */
+
+        .stat-item {
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #43a047;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #2e7d32;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        body.dark-mode .stat-label {
+            color: #a5d6a7;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1b5e20;
+        }
+
+        body.dark-mode .stat-value {
+            color: #81c784;
+        }
+
+        /* Clock Widget */
+        .clock-widget {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            background: linear-gradient(135deg, #ffffff, #e8f5e9);
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        body.dark-mode .clock-widget {
+            background: linear-gradient(135deg, #1a2e1a, #264026);
+            color: #e8f5e9;
+        }
+
+        .clock-time {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .clock-time {
+            color: #81c784;
+        }
+
+        .clock-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        body.dark-mode .clock-label {
+            color: #a5d6a7;
+        }
+
+        /* Matrix Mode */
+        body.matrix-mode .mps-watermark,
+        body.matrix-mode body::before,
+        body.matrix-mode body::after,
+        body.matrix-mode .section::before {
+            animation: matrixFall 3s linear infinite !important;
+            color: #00ff00 !important;
+        }
+
+        @keyframes matrixFall {
+            0% { transform: translateY(-100%) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Secret Message */
+        .secret-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 10000;
+            background: linear-gradient(135deg, #9c27b0, #e91e63, #ff6b35);
+            color: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            transition: all 0.5s;
+            max-width: 500px;
+        }
+
+        .secret-message.show {
+            transform: translate(-50%, -50%) scale(1);
+            animation: rainbow 3s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { border: 5px solid #ff0000; }
+            14% { border: 5px solid #ff7f00; }
+            28% { border: 5px solid #ffff00; }
+            42% { border: 5px solid #00ff00; }
+            57% { border: 5px solid #0000ff; }
+            71% { border: 5px solid #4b0082; }
+            85% { border: 5px solid #9400d3; }
+            100% { border: 5px solid #ff0000; }
+        }
+
+        .secret-message h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .secret-message button {
+            background: white;
+            color: #ff6b35;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        /* Altitude Bar */
+        .altitude-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to right, #1b5e20, #43a047, #66bb6a);
+            z-index: 998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .altitude-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(to right, #ffeb3b, #ffc107, #ff9800);
+            transition: width 0.1s;
+            opacity: 0.3;
         }
         * {
             margin: 0;
@@ -730,6 +1038,591 @@
     <div class="mps-watermark mps-2">M.P.S</div>
     <div class="mps-watermark mps-3">M.P.S</div>
 
+    <!-- Menu Toggle (3 bars) -->
+    <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+        <div class="menu-bar"></div>
+        <div class="menu-bar"></div>
+        <div class="menu-bar"></div>
+    </div>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu" id="dropdownMenu">
+        <!-- Music Category -->
+        <div class="menu-category">
+            <div class="category-header" onclick="toggleCategory('music')">
+                <span>🎵 Musique</span>
+                <span class="category-icon">▼</span>
+            </div>
+            <div class="category-content" id="musicCategory">
+                <select class="music-select" id="musicSelect" onchange="changeMusic()">
+                    <option value="">Choisir une musique</option>
+                    <option value="https://www.bensound.com/bensound-music/bensound-acousticbreeze.mp3">Acoustic Breeze</option>
+                    <option value="https://www.bensound.com/bensound-music/bensound-happyrock.mp3">Happy Rock</option>
+                    <option value="https://www.bensound.com/bensound-music/bensound-sunny.mp3">Sunny</option>
+                    <option value="https://www.bensound.com/bensound-music/bensound-creativeminds.mp3">Creative Minds</option>
+                    <option value="https://www.bensound.com/bensound-music/bensound-energy.mp3">Energy</option>
+                </select>
+                <div class="music-controls">
+                    <button class="music-btn" onclick="playMusic()">▶️</button>
+                    <button class="music-btn" onclick="pauseMusic()">⏸️</button>
+                    <button class="music-btn" onclick="stopMusic()">⏹️</button>
+                </div>
+                <div class="volume-control">
+                    <label>Volume: <span id="volumeValue">50</span>%</label>
+                    <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="changeVolume(this.value)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Category -->
+        <div class="menu-category">
+            <div class="category-header" onclick="toggleCategory('settings')">
+                <span>⚙️ Paramètres</span>
+                <span class="category-icon">▼</span>
+            </div>
+            <div class="category-content" id="settingsCategory">
+                <div class="setting-item">
+                    <label>❄️ Vitesse neige: <span id="snowSpeed">300</span>ms</label>
+                    <input type="range" class="setting-slider" min="100" max="1000" value="300" oninput="changeSnowSpeed(this.value)">
+                </div>
+
+                <div class="setting-item">
+                    <label>🎨 Intensité dégradés: <span id="gradientIntensity">100</span>%</label>
+                    <input type="range" class="setting-slider" min="50" max="150" value="100" oninput="changeGradientIntensity(this.value)">
+                </div>
+
+                <div class="setting-item">
+                    <label>Thème couleur principale:</label>
+                    <input type="color" class="color-picker" value="#43a047" onchange="changeThemeColor(this.value)">
+                </div>
+
+                <div class="setting-item">
+                    <button class="setting-btn" onclick="toggleAnimations()">
+                        <span id="animStatus">✅ Animations ON</span>
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <button class="setting-btn" onclick="toggleMatrixMode()">
+                        💚 Mode Matrix M.P.S
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <button class="setting-btn" onclick="toggleLanguage()">
+                        <span id="langStatus">🇫🇷 Français</span>
+                    </button>
+                </div>
+
+                <div class="setting-item">
+                    <button class="setting-btn" onclick="toggleDarkMode()">
+                        <span id="modeStatus">🌙 Mode Nuit</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Category -->
+        <div class="menu-category">
+            <div class="category-header" onclick="toggleCategory('stats')">
+                <span>📊 Statistiques</span>
+                <span class="category-icon">▼</span>
+            </div>
+            <div class="category-content" id="statsCategory">
+                <div class="stat-item">
+                    <div class="stat-label">👥 Explorateurs</div>
+                    <div class="stat-value" id="visitorCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">⏱️ Temps sur le site</div>
+                    <div class="stat-value" id="timeSpent">0:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">🌍 Montagnes au monde</div>
+                    <div class="stat-value">1,187,049</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">🌡️ Chamonix</div>
+                    <div class="stat-value" id="weather">Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clock Widget -->
+    <div class="clock-widget">
+        <div class="clock-time" id="clockTime">00:00:00</div>
+        <div class="clock-label">🏔️ Heure du Népal</div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <!-- Altitude Bar -->
+    <div class="altitude-bar">
+        <div class="altitude-progress" id="altitudeProgress"></div>
+        <span id="altitudeText">⛰️ Altitude: 0m / 8849m (Everest)</span>
+    </div>
+
+    <!-- Secret Message -->
+    <div class="secret-message" id="secretMessage">
+        <h2>🤫 SECRET DÉCOUVERT ! 🤫</h2>
+        <p style="font-size: 2rem; margin: 1.5rem 0; font-weight: bold;">AELYS EST GAY 🏳️‍🌈</p>
+        <p style="font-size: 1.2rem;">Tu as trouvé le secret du Groupe des Bacas !</p>
+        <button onclick="closeSecret()">Fermer</button>
+    </div>
+
+    <script>
+        let snowInterval = 300;
+        let animationsEnabled = true;
+        let currentLang = 'fr';
+        let startTime = Date.now();
+
+        // Snow effect
+        function createSnowflake() {
+            if (!animationsEnabled) return;
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄️';
+            snowflake.style.left = Math.random() * 100 + '%';
+            snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+            snowflake.style.opacity = Math.random();
+            snowflake.style.fontSize = Math.random() * 1 + 0.5 + 'rem';
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, 8000);
+        }
+
+        let snowTimer = setInterval(createSnowflake, snowInterval);
+
+        // Clock (Nepal time: UTC+5:45)
+        function updateClock() {
+            const now = new Date();
+            const nepalTime = new Date(now.getTime() + (5.75 * 60 * 60 * 1000));
+            const hours = String(nepalTime.getUTCHours()).padStart(2, '0');
+            const minutes = String(nepalTime.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(nepalTime.getUTCSeconds()).padStart(2, '0');
+            document.getElementById('clockTime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Visitor counter (simulated)
+        let visitorCount = Math.floor(Math.random() * 5000) + 3000;
+        let currentCount = 0;
+        function animateCounter() {
+            if (currentCount < visitorCount) {
+                currentCount += Math.ceil((visitorCount - currentCount) / 20);
+                document.getElementById('visitorCount').textContent = currentCount.toLocaleString();
+                setTimeout(animateCounter, 50);
+            }
+        }
+        animateCounter();
+
+        // Time spent
+        function updateTimeSpent() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('timeSpent').textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
+        }
+        setInterval(updateTimeSpent, 1000);
+
+        // Weather (simulated)
+        const weather = ['☀️ 15°C', '⛅ 12°C', '🌤️ 18°C', '❄️ -5°C', '🌨️ -2°C'];
+        document.getElementById('weather').textContent = weather[Math.floor(Math.random() * weather.length)];
+
+        // Altitude on scroll
+        function updateAltitude() {
+            const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            const altitude = Math.floor((scrollPercent / 100) * 8849);
+            document.getElementById('altitudeProgress').style.width = scrollPercent + '%';
+            document.getElementById('altitudeText').textContent = `⛰️ Altitude: ${altitude}m / 8849m (Everest)`;
+        }
+        window.addEventListener('scroll', updateAltitude);
+
+        // Secret on title click (10 times)
+        let titleClickCount = 0;
+        window.addEventListener('load', function() {
+            const title = document.querySelector('header h1');
+            if (title) {
+                title.style.cursor = 'pointer';
+                title.addEventListener('click', function() {
+                    titleClickCount++;
+                    if (titleClickCount >= 10) {
+                        document.getElementById('secretMessage').classList.add('show');
+                        titleClickCount = 0;
+                    }
+                });
+            }
+        });
+
+        function closeSecret() {
+            document.getElementById('secretMessage').classList.remove('show');
+        }
+
+        // Dark mode toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const status = document.getElementById('modeStatus');
+            if (document.body.classList.contains('dark-mode')) {
+                status.textContent = '☀️ Mode Jour';
+            } else {
+                status.textContent = '🌙 Mode Nuit';
+            }
+        }
+
+        // Menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            const toggle = document.getElementById('menuToggle');
+            menu.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+
+        // Category toggle
+        function toggleCategory(category) {
+            const categoryContent = document.getElementById(category + 'Category');
+            const header = categoryContent.previousElementSibling;
+            
+            categoryContent.classList.toggle('active');
+            header.classList.toggle('active');
+        }
+
+        // Settings panel
+        function toggleSettings() {
+            document.getElementById('settingsPanel').classList.toggle('minimized');
+        }
+
+        function changeSnowSpeed(value) {
+            snowInterval = parseInt(value);
+            document.getElementById('snowSpeed').textContent = value;
+            clearInterval(snowTimer);
+            snowTimer = setInterval(createSnowflake, snowInterval);
+        }
+
+        function changeGradientIntensity(value) {
+            document.getElementById('gradientIntensity').textContent = value;
+            document.body.style.filter = `saturate(${value}%)`;
+        }
+
+        function changeThemeColor(color) {
+            document.documentElement.style.setProperty('--main-color', color);
+            
+            // Calculate lighter and darker versions
+            const r = parseInt(color.substr(1,2), 16);
+            const g = parseInt(color.substr(3,2), 16);
+            const b = parseInt(color.substr(5,2), 16);
+            
+            // Lighter version (add 40 to each)
+            const rLight = Math.min(255, r + 40);
+            const gLight = Math.min(255, g + 40);
+            const bLight = Math.min(255, b + 40);
+            const colorLight = `#${rLight.toString(16).padStart(2,'0')}${gLight.toString(16).padStart(2,'0')}${bLight.toString(16).padStart(2,'0')}`;
+            
+            // Darker version (subtract 40 from each)
+            const rDark = Math.max(0, r - 40);
+            const gDark = Math.max(0, g - 40);
+            const bDark = Math.max(0, b - 40);
+            const colorDark = `#${rDark.toString(16).padStart(2,'0')}${gDark.toString(16).padStart(2,'0')}${bDark.toString(16).padStart(2,'0')}`;
+            
+            document.documentElement.style.setProperty('--main-color-light', colorLight);
+            document.documentElement.style.setProperty('--main-color-dark', colorDark);
+        }
+
+        function toggleAnimations() {
+            animationsEnabled = !animationsEnabled;
+            const status = document.getElementById('animStatus');
+            if (animationsEnabled) {
+                status.textContent = '✅ Animations ON';
+                document.body.style.animation = '';
+            } else {
+                status.textContent = '❌ Animations OFF';
+                document.body.style.animation = 'none';
+                document.querySelectorAll('.snowflake').forEach(s => s.remove());
+            }
+        }
+
+        function toggleMatrixMode() {
+            document.body.classList.toggle('matrix-mode');
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'fr' ? 'en' : 'fr';
+            const status = document.getElementById('langStatus');
+            
+            if (currentLang === 'en') {
+                status.textContent = '🇬🇧 English';
+                
+                // Header
+                document.querySelector('header h1').textContent = '🏔️ Wild Pyrenees Mountains';
+                document.querySelector('header p').textContent = 'Discover the majestic peaks of the Rhône-Alpes';
+                document.querySelector('.creators').textContent = '✨ Created by Jojo, Aelys & Lio ✨';
+                
+                // Navigation
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks[0].textContent = '🗻 Massifs';
+                navLinks[1].textContent = '⛰️ Peaks';
+                navLinks[2].textContent = '🥾 Hiking';
+                navLinks[3].textContent = '💡 Tips';
+                
+                // Menu headers
+                const headers = document.querySelectorAll('.category-header span:first-child');
+                headers[0].textContent = '🎵 Music';
+                headers[1].textContent = '⚙️ Settings';
+                headers[2].textContent = '📊 Statistics';
+                
+                // Hero section
+                document.querySelector('.hero h2').textContent = 'Adventure Starts Here';
+                document.querySelector('.hero p').textContent = 'Explore the most beautiful peaks of the French Alps';
+                
+                // Section titles
+                const sections = document.querySelectorAll('.section h2');
+                sections[0].textContent = 'The Great Massifs';
+                sections[1].textContent = 'Iconic Peaks';
+                sections[2].textContent = 'Unmissable Hikes';
+                sections[3].textContent = 'Practical Tips';
+                
+                // Mountain cards - Mont Blanc
+                const cards = document.querySelectorAll('.mountain-card');
+                cards[0].querySelector('h3').textContent = 'Mont Blanc';
+                cards[0].querySelector('.description').innerHTML = '🌟 The titan of the Alps! Iconic glacial colossus, this giant of rock and ice reigns supreme over Western Europe. Its vertiginous walls challenge the most experienced mountaineers, while its millennial glaciers tell the story of our planet. A natural temple where extreme danger meets absolute beauty.';
+                
+                // Mont Everest
+                cards[1].querySelector('h3').textContent = 'Mount Everest';
+                cards[1].querySelector('.description').innerHTML = "👑 THE ROOF OF THE WORLD! The ultimate mountain, the Holy Grail of all mountaineers! Located in the Himalayas between Nepal and Tibet, this monster of ice and rock represents humanity's supreme challenge. At this altitude, oxygen becomes scarce, the body suffers, but the spirit soars! Every step is a victory against the unleashed elements.";
+                
+                // Massif des Écrins
+                cards[2].querySelector('h3').textContent = 'Écrins Massif';
+                cards[2].querySelector('.description').innerHTML = '💎 The wild jewel of the Southern Alps! This preserved national park is a true earthly paradise where nature reigns unchallenged. Sparkling glaciers, crystal-clear turquoise alpine lakes, sharp peaks piercing the clouds... An alpine sanctuary where ibex and chamois live in total freedom!';
+                
+                // Vanoise
+                cards[3].querySelector('h3').textContent = 'Vanoise';
+                cards[3].querySelector('.description').innerHTML = "🏞️ France's first-born park! Created in 1963, this alpine sanctuary hosts Europe's largest concentration of ibex. Its majestic summits, verdant valleys and flowered alpine pastures form a unique ecosystem where nature reclaims its rights. A grandiose spectacle in every season!";
+                
+                // Aiguille du Midi
+                cards[4].querySelector('h3').textContent = 'Aiguille du Midi';
+                cards[4].querySelector('.description').innerHTML = "🚡 The ultimate experience at 3842m! Climb into the clouds via Europe's most vertiginous cable car. At the summit: a breathtaking panorama of the Mont Blanc massif, the Vallée Blanche and the 360° Alps. Extreme sensations guaranteed with the glass walkway suspended in the void!";
+                
+                // Info box
+                document.querySelector('.info-box h3').textContent = '🌲 Wild and Preserved Nature';
+                document.querySelector('.info-box p').innerHTML = 'The mountains of the Rhône-Alpes shelter an <span class="highlight">exceptional biodiversity</span>: majestic ibex, agile chamois, playful marmots, royal eagles soaring in the skies, and a unique alpine flora with dazzling colors. National and regional parks protect these <span class="highlight">fragile ecosystems</span> for future generations, offering visitors an authentic experience at the heart of preserved nature.';
+                document.querySelector('.inoxtag-message').textContent = "💪 Follow Inoxtag's example: respect the mountain, push your limits and inspire others to achieve their dreams!";
+                
+                // Hiking section
+                const hikingCards = document.querySelectorAll('#randonnees .mountain-card');
+                hikingCards[0].querySelector('h3').textContent = 'Tour du Mont Blanc';
+                hikingCards[0].querySelector('.description').innerHTML = '🎒 The mythical trek that crosses three countries (France, Italy, Switzerland) around the Mont Blanc massif. An unforgettable adventure through varied alpine landscapes: glaciers, flowered alpine pastures, high-altitude passes and traditional refuges. The ultimate hiking experience in Europe!';
+                
+                hikingCards[1].querySelector('h3').textContent = 'GR5 - Alpine Crossing';
+                hikingCards[1].querySelector('.description').innerHTML = "🗺️ From Geneva to Nice, the great Alpine crossing goes through all the emblematic massifs. An epic journey through alpine diversity: Vanoise, Écrins, Queyras, Mercantour. For passionate hikers seeking total adventure and absolute disconnection!";
+                
+                hikingCards[2].querySelector('h3').textContent = 'Lac Blanc';
+                hikingCards[2].querySelector('.description').innerHTML = '💧 Stunning view of the Mont Blanc massif from this emblematic alpine lake at 2352m. Accessible hike from Chamonix offering a spectacular panorama of snowy peaks reflected in crystal waters. Magic guaranteed at sunrise and sunset!';
+                
+                // Tips section
+                document.querySelector('#conseils .info-box h3').textContent = '⚠️ Mountain Safety';
+                const tips = document.querySelectorAll('#conseils .info-box li');
+                tips[0].innerHTML = '☁️ <strong>Check the weather</strong> before each outing and adapt your route';
+                tips[1].innerHTML = '⏰ <strong>Leave early</strong> in the morning to avoid afternoon storms';
+                tips[2].innerHTML = '👟 <strong>Equip yourself</strong> with good high hiking boots';
+                tips[3].innerHTML = '🎒 <strong>Bring</strong> sufficient water, energy food and warm clothes';
+                tips[4].innerHTML = '📱 <strong>Inform</strong> your relatives of your route and return time';
+                tips[5].innerHTML = "🌿 <strong>Respect</strong> wildlife, flora and leave no trace";
+                tips[6].innerHTML = '💪 <strong>Objectively assess</strong> your physical abilities before leaving';
+                tips[7].innerHTML = '🗺️ <strong>Bring</strong> a map and compass (or GPS)';
+                
+                // Altitude bar
+                const altitude = document.getElementById('altitudeText').textContent.match(/\d+/g);
+                if (altitude) {
+                    document.getElementById('altitudeText').textContent = `⛰️ Altitude: ${altitude[0]}m / 8849m (Everest)`;
+                }
+                
+                // Clock
+                document.querySelector('.clock-label').textContent = '🏔️ Nepal Time';
+                
+                // Stats labels
+                document.querySelectorAll('.stat-label')[0].textContent = '👥 Explorers';
+                document.querySelectorAll('.stat-label')[1].textContent = '⏱️ Time on site';
+                document.querySelectorAll('.stat-label')[2].textContent = '🌍 Mountains worldwide';
+                document.querySelectorAll('.stat-label')[3].textContent = '🌡️ Chamonix';
+                
+                // Footer
+                document.querySelector('footer p').textContent = '🏔️ Wild Pyrenees Mountains | Discover the beauty of the Alps 🏔️';
+                document.querySelectorAll('footer p')[1].textContent = '🥾 Hike responsibly, preserve the mountain 🌲';
+                document.querySelector('.footer-signature p:first-child').textContent = '⚡ FUCK ANJALI AND ELIOTT ⚡';
+                document.querySelector('.footer-signature p:last-child').textContent = '✨ Signed: The Bacas Group ✨';
+                
+                // Settings labels
+                document.querySelectorAll('.setting-item label')[0].childNodes[0].textContent = '❄️ Snow speed: ';
+                document.querySelectorAll('.setting-item label')[1].childNodes[0].textContent = '🎨 Gradient intensity: ';
+                document.querySelectorAll('.setting-item label')[2].textContent = 'Main theme color:';
+                document.getElementById('animStatus').textContent = animationsEnabled ? '✅ Animations ON' : '❌ Animations OFF';
+                document.querySelectorAll('.setting-btn')[1].textContent = '💚 M.P.S Matrix Mode';
+                document.getElementById('modeStatus').textContent = document.body.classList.contains('dark-mode') ? '☀️ Day Mode' : '🌙 Night Mode';
+                
+                // Music
+                document.querySelector('.volume-control label').childNodes[0].textContent = 'Volume: ';
+                document.querySelector('#musicSelect option').textContent = 'Choose a song';
+                
+            } else {
+                status.textContent = '🇫🇷 Français';
+                
+                // Header
+                document.querySelector('header h1').textContent = '🏔️ Montagnes Pyrénées Sauvages';
+                document.querySelector('header p').textContent = 'Découvrez les sommets majestueux des Rhône-Alpes';
+                document.querySelector('.creators').textContent = '✨ Créé par Jojo, Aelys & Lio ✨';
+                
+                // Navigation
+                const navLinks = document.querySelectorAll('nav a');
+                navLinks[0].textContent = '🗻 Massifs';
+                navLinks[1].textContent = '⛰️ Sommets';
+                navLinks[2].textContent = '🥾 Randonnées';
+                navLinks[3].textContent = '💡 Conseils';
+                
+                // Menu headers
+                const headers = document.querySelectorAll('.category-header span:first-child');
+                headers[0].textContent = '🎵 Musique';
+                headers[1].textContent = '⚙️ Paramètres';
+                headers[2].textContent = '📊 Statistiques';
+                
+                // Hero section
+                document.querySelector('.hero h2').textContent = "L'Aventure Commence Ici";
+                document.querySelector('.hero p').textContent = 'Explorez les plus beaux sommets des Alpes françaises';
+                
+                // Section titles
+                const sections = document.querySelectorAll('.section h2');
+                sections[0].textContent = 'Les Grands Massifs';
+                sections[1].textContent = 'Sommets Emblématiques';
+                sections[2].textContent = 'Randonnées Incontournables';
+                sections[3].textContent = 'Conseils Pratiques';
+                
+                // Mountain cards - Mont Blanc
+                const cards = document.querySelectorAll('.mountain-card');
+                cards[0].querySelector('h3').textContent = 'Mont Blanc';
+                cards[0].querySelector('.description').innerHTML = '🌟 Le titan des Alpes ! Colosse glaciaire emblématique, ce géant de roche et de glace règne en maître absolu sur l\'Europe occidentale. Ses parois vertigineuses défient les alpinistes les plus aguerris, tandis que ses glaciers millénaires racontent l\'histoire de notre planète. Un temple naturel où se mêlent danger extrême et beauté absolue.';
+                
+                // Mont Everest
+                cards[1].querySelector('h3').textContent = 'Mont Everest';
+                cards[1].querySelector('.description').innerHTML = "👑 LE TOIT DU MONDE ! La montagne ultime, le Graal de tous les alpinistes ! Situé dans l'Himalaya entre le Népal et le Tibet, ce monstre de glace et de roche représente le défi suprême de l'humanité. À cette altitude, l'oxygène se raréfie, le corps souffre, mais l'esprit s'élève ! Chaque pas est une victoire contre les éléments déchaînés.";
+                
+                // Massif des Écrins
+                cards[2].querySelector('h3').textContent = 'Massif des Écrins';
+                cards[2].querySelector('.description').innerHTML = '💎 Le joyau sauvage des Alpes du Sud ! Ce parc national préservé est un véritable paradis terrestre où la nature règne sans partage. Glaciers étincelants, lacs d\'altitude aux eaux turquoise cristallines, pics acérés déchirant les nuages... Un sanctuaire alpin où bouquetins et chamois vivent en totale liberté !';
+                
+                // Vanoise
+                cards[3].querySelector('h3').textContent = 'Vanoise';
+                cards[3].querySelector('.description').innerHTML = "🏞️ Le premier-né des parcs français ! Créé en 1963, ce sanctuaire alpin abrite la plus grande concentration de bouquetins d'Europe. Ses sommets majestueux, ses vallées verdoyantes et ses alpages fleuris forment un écosystème unique où la nature reprend ses droits. Un spectacle grandiose à chaque saison !";
+                
+                // Aiguille du Midi
+                cards[4].querySelector('h3').textContent = 'Aiguille du Midi';
+                cards[4].querySelector('.description').innerHTML = "🚡 L'expérience ultime à 3842m ! Grimpez dans les nuages via le téléphérique le plus vertigineux d'Europe. Au sommet : un panorama à couper le souffle sur le massif du Mont Blanc, la Vallée Blanche et les Alpes à 360°. Sensations extrêmes garanties avec la passerelle de verre suspendue dans le vide !";
+                
+                // Info box
+                document.querySelector('.info-box h3').textContent = '🌲 Nature Sauvage et Préservée';
+                document.querySelector('.info-box p').innerHTML = 'Les montagnes des Rhône-Alpes abritent une <span class="highlight">biodiversité exceptionnelle</span> : bouquetins majestueux, chamois agiles, marmottes espiègles, aigles royaux planant dans les cieux, et une flore alpine unique aux couleurs éclatantes. Les parcs nationaux et régionaux protègent ces <span class="highlight">écosystèmes fragiles</span> pour les générations futures, offrant aux visiteurs une expérience authentique au cœur d\'une nature préservée.';
+                document.querySelector('.inoxtag-message').textContent = "💪 Suivez l'exemple d'Inoxtag : respectez la montagne, dépassez vos limites et inspirez les autres à réaliser leurs rêves !";
+                
+                // Hiking section
+                const hikingCards = document.querySelectorAll('#randonnees .mountain-card');
+                hikingCards[0].querySelector('h3').textContent = 'Tour du Mont Blanc';
+                hikingCards[0].querySelector('.description').innerHTML = '🎒 Le trek mythique qui traverse trois pays (France, Italie, Suisse) autour du massif du Mont Blanc. Une aventure inoubliable à travers des paysages alpins variés : glaciers, alpages fleuris, cols d\'altitude et refuges traditionnels. L\'expérience de randonnée ultime en Europe !';
+                
+                hikingCards[1].querySelector('h3').textContent = 'GR5 - Traversée des Alpes';
+                hikingCards[1].querySelector('.description').innerHTML = "🗺️ De Genève à Nice, la grande traversée des Alpes franchit tous les massifs emblématiques. Un voyage épique à travers la diversité alpine : Vanoise, Écrins, Queyras, Mercantour. Pour randonneurs passionnés en quête d'aventure totale et de déconnexion absolue !";
+                
+                hikingCards[2].querySelector('h3').textContent = 'Lac Blanc';
+                hikingCards[2].querySelector('.description').innerHTML = '💧 Vue imprenable sur le massif du Mont Blanc depuis ce lac d\'altitude emblématique à 2352m. Randonnée accessible depuis Chamonix offrant un panorama spectaculaire sur les sommets enneigés se reflétant dans les eaux cristallines. Magic garantie au lever et coucher du soleil !';
+                
+                // Tips section
+                document.querySelector('#conseils .info-box h3').textContent = '⚠️ Sécurité en Montagne';
+                const tips = document.querySelectorAll('#conseils .info-box li');
+                tips[0].innerHTML = '☁️ <strong>Consultez la météo</strong> avant chaque sortie et adaptez votre itinéraire';
+                tips[1].innerHTML = '⏰ <strong>Partez tôt</strong> le matin pour éviter les orages d\'après-midi';
+                tips[2].innerHTML = '👟 <strong>Équipez-vous</strong> de bonnes chaussures de randonnée montantes';
+                tips[3].innerHTML = '🎒 <strong>Emportez</strong> eau en quantité suffisante, nourriture énergétique et vêtements chauds';
+                tips[4].innerHTML = '📱 <strong>Prévenez</strong> vos proches de votre itinéraire et heure de retour';
+                tips[5].innerHTML = "🌿 <strong>Respectez</strong> la faune, la flore et ne laissez aucune trace";
+                tips[6].innerHTML = '💪 <strong>Évaluez</strong> objectivement vos capacités physiques avant de partir';
+                tips[7].innerHTML = '🗺️ <strong>Munissez-vous</strong> d\'une carte et d\'une boussole (ou GPS)';
+                
+                // Altitude bar
+                const altitude = document.getElementById('altitudeText').textContent.match(/\d+/g);
+                if (altitude) {
+                    document.getElementById('altitudeText').textContent = `⛰️ Altitude: ${altitude[0]}m / 8849m (Everest)`;
+                }
+                
+                // Clock
+                document.querySelector('.clock-label').textContent = '🏔️ Heure du Népal';
+                
+                // Stats labels
+                document.querySelectorAll('.stat-label')[0].textContent = '👥 Explorateurs';
+                document.querySelectorAll('.stat-label')[1].textContent = '⏱️ Temps sur le site';
+                document.querySelectorAll('.stat-label')[2].textContent = '🌍 Montagnes au monde';
+                document.querySelectorAll('.stat-label')[3].textContent = '🌡️ Chamonix';
+                
+                // Footer
+                document.querySelector('footer p').textContent = '🏔️ Montagnes Pyrénées Sauvages | Découvrez la beauté des Alpes 🏔️';
+                document.querySelectorAll('footer p')[1].textContent = '🥾 Randonnez responsable, préservez la montagne 🌲';
+                document.querySelector('.footer-signature p:first-child').textContent = '⚡ FUCK ANJALI ET ELIOTT ⚡';
+                document.querySelector('.footer-signature p:last-child').textContent = '✨ Signé : Le Groupe des Bacas ✨';
+                
+                // Settings labels
+                document.querySelectorAll('.setting-item label')[0].childNodes[0].textContent = '❄️ Vitesse neige: ';
+                document.querySelectorAll('.setting-item label')[1].childNodes[0].textContent = '🎨 Intensité dégradés: ';
+                document.querySelectorAll('.setting-item label')[2].textContent = 'Thème couleur principale:';
+                document.getElementById('animStatus').textContent = animationsEnabled ? '✅ Animations ON' : '❌ Animations OFF';
+                document.querySelectorAll('.setting-btn')[1].textContent = '💚 Mode Matrix M.P.S';
+                document.getElementById('modeStatus').textContent = document.body.classList.contains('dark-mode') ? '☀️ Mode Jour' : '🌙 Mode Nuit';
+                
+                // Music
+                document.querySelector('.volume-control label').childNodes[0].textContent = 'Volume: ';
+                document.querySelector('#musicSelect option').textContent = 'Choisir une musique';
+            }
+        }
+
+        // Music panel toggle
+        function togglePanel() {
+            // Cette fonction n'est plus nécessaire car tout est dans le menu
+        }
+
+        // Music functions
+        const audio = document.getElementById('audioPlayer');
+
+        function changeMusic() {
+            const select = document.getElementById('musicSelect');
+            const url = select.value;
+            if (url) {
+                audio.src = url;
+                audio.load();
+            }
+        }
+
+        function playMusic() {
+            if (audio.src) {
+                audio.play();
+            }
+        }
+
+        function pauseMusic() {
+            audio.pause();
+        }
+
+        function stopMusic() {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+
+        function changeVolume(value) {
+            audio.volume = value / 100;
+            document.getElementById('volumeValue').textContent = value;
+        }
+
+        // Set initial volume
+        audio.volume = 0.5;
+    </script>
+
     <header>
         <h1>🏔️ Montagnes Pyrénées Sauvages</h1>
         <p>Découvrez les sommets majestueux des Rhône-Alpes</p>
@@ -980,14 +1873,14 @@
             <div class="info-box">
                 <h3>⚠️ Sécurité en Montagne</h3>
                 <ul style="margin-left: 1.5rem; margin-top: 1rem;">
-                    <li>☁️ <strong>Consultez la météo</strong> avant chaque sortie et adaptez votre itinéraire</li>
-                    <li>⏰ <strong>Partez tôt</strong> le matin pour éviter les orages d'après-midi</li>
-                    <li>👟 <strong>Équipez-vous</strong> de bonnes chaussures de randonnée montantes</li>
-                    <li>🎒 <strong>Emportez</strong> eau en quantité suffisante, nourriture énergétique et vêtements chauds</li>
-                    <li>📱 <strong>Prévenez</strong> vos proches de votre itinéraire et heure de retour</li>
-                    <li>🌿 <strong>Respectez</strong> la faune, la flore et ne laissez aucune trace</li>
-                    <li>💪 <strong>Évaluez</strong> objectivement vos capacités physiques avant de partir</li>
-                    <li>🗺️ <strong>Munissez-vous</strong> d'une carte et d'une boussole (ou GPS)</li>
+                    <li>☁️ <strong>Consultez la météo</strong> Pour eviter la fortes pluie !</li>
+                    <li>⏰ <strong>Faites sa tard</strong> 23h jusqu'a 6h du sbard</li>
+                    <li>👟 <strong>Équipez-vous</strong> DES CAPOTES</li>
+                    <li>🎒 <strong>Emportez</strong> encore DE CAPOTES</li>
+                    <li>📱 <strong>Prévenez</strong> Jouir , et quand ca part !</li>
+                    <li>🌿 <strong>Ne rien Respectez</strong> surtout le consetement</li>
+                    <li>💪 <strong>Évaluez</strong> La qualité de la marchandise</li>
+                    <li>🗺️ <strong>Munissez-vous</strong> SE MUNIR D'UNE GROSSE BANANE POUR L'EXPLORATION</li>
                 </ul>
             </div>
         </section>
